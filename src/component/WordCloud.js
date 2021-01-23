@@ -1,5 +1,6 @@
 import { TagCloud } from 'react-tagcloud'
- 
+ import "./WordCloud.css";
+
 const data = [
   { value: 'JavaScript', count: 38 },
   { value: 'React', count: 30 },
@@ -12,11 +13,8 @@ const data = [
  
 export default function WordCloud() {
   return (
-  <TagCloud
-    minSize={12}
-    maxSize={35}
-    tags={data}
-    onClick={tag => alert(`'${tag.value}' was selected!`)}
-  />
-  )
+    <div className="word-cloud">
+      <TagCloud minSize={12} maxSize={35} tags={data} onClick={(tag) => alert(`'${tag.value}' was selected!`)} />
+    </div>
+  );
 }

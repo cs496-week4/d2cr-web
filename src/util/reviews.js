@@ -4,7 +4,7 @@ export function reviewReducer(state, action) {
   switch (action.type) {
     case reviewActionTypes.LOAD_MORE_REVIEWS:
       const newReviews = [...state.reviews, ...action.payload];
-      console.log("in reducer: ", newReviews);
+      console.log("LOAD_MORE_REVIEWS: ", newReviews);
 
       return { ...state, reviews: newReviews };
 
@@ -24,6 +24,7 @@ export function reviewReducer(state, action) {
       return { ...state, offset: action.payload };
 
     case reviewActionTypes.INIT_REVIEWS:
+        console.log("INIT_REVIEWS: ", action.payload);
         return { ...state, reviews: action.payload };
 
     default:

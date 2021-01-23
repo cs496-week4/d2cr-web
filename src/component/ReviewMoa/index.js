@@ -63,7 +63,7 @@ export default function ReviewMoa() {
       async function fetchReviews() {
         const requestData = getCurrentRequestData();
         const path = window.location.pathname;
-        const newReviews = await getReviews(path, requestData, offset);
+        const newReviews = await getReviews(path, requestData, 0);
         dispatch(actions.INIT_REVIEWS(newReviews));
         setReloading(false);
         setOffset(0);
