@@ -1,6 +1,6 @@
-export function getRequestData(term, rateFilter, sorter, sorterDir) {
+export function getRequestData(searchKeyword, rateFilter, sorter, sorterDir) {
     return {
-      search: term,
+      search: searchKeyword,
       rateFilter,
       sorter,
       sorterDir,

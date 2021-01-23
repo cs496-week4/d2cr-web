@@ -13,7 +13,7 @@ const rateFilterRawButtons = [
 
 
 const sorterState = {
-    star: "star", // 별점순
+    rate: "rate", // 별점순
     date: "date", // 날짜순
 }
 
@@ -23,7 +23,7 @@ const sorterDirState = {
 }
 
 const sorterRawButtons = [
-  { name: sorterState.star, label: "평점" },
+  { name: sorterState.rate, label: "평점" },
   { name: sorterState.date, label: "날짜" },
 ];
 
@@ -34,12 +34,12 @@ const getSorterDirRawButtons = (sorter) => [
 
 const getLabel = (sorter, sorterDir) => {
     switch (sorter) {
-        case (sorterState.star):
-            return (sorterDir == sorterDirState.low) ? 
+        case (sorterState.rate):
+            return (sorterDir === sorterDirState.low) ? 
              "낮은 리뷰부터" : "높은 리뷰부터"
     
         case (sorterState.date):
-            return sorterDir == sorterDirState.low ? "오래된 리뷰부터" : "최신 리뷰부터";
+            return sorterDir === sorterDirState.low ? "오래된 리뷰부터" : "최신 리뷰부터";
 
         default:
             console.error(sorter + "은 등록된 정렬자(sorter)가 아닙니다")

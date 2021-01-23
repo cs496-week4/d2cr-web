@@ -1,15 +1,15 @@
 import React, {useState} from "react";
 import "./ReviewMoa.css";
 export default function SearchPanel({onSearchChange}) {
-  const [term, setTerm] = useState("");
+  const [searchKeyword, setSearchKeyword] = useState("");
 
   const handleSearchChange = (e) => {
-    const term = e.target.value;
-    setTerm(term);
+    const searchKeyword = e.target.value;
+    setSearchKeyword(searchKeyword);
 	};
 	
 	const handleSubmit = () => {
-  	onSearchChange(term);
+  	onSearchChange(searchKeyword);
 	}
 
   return (
@@ -18,7 +18,7 @@ export default function SearchPanel({onSearchChange}) {
         type="text"
         className="form-control search-input"
         placeholder="검색어를 입력하세요!"
-        value={term}
+        value={searchKeyword}
         onChange={handleSearchChange}
         onKeyPress={handleSubmit}
       />
