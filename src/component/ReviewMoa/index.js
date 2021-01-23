@@ -1,42 +1,40 @@
 import React, { useEffect, useState } from "react";
-import "./App.css";
-import AppHeader from "../AppHeader";
+import AppHeader from "./AppHeader";
 import SearchPanel from "./SearchPanel";
 import ReviewList from "./ReviewList";
-import Filter from "./Filter";
+import RateFilter from "./RateFilter";
 import Sorter from "./Sorter";
-import { filterState, sorterState, sorterDirState } from "../../util/states";
-import axios from "axios";
+import { rateFilterState, sorterState, sorterDirState } from "../../util/states";
+import "./ReviewMoa.css";
+import {getReviews} from "../../api"
+import { getRequestData } from "../../util/format";
 
-// filter, term 모두 server에 전달해서 해당 데이터 받아옴
+// rateFilter, term 모두 server에 전달해서 해당 데s이터 받아옴
 export default function ReviewMoa() {
   const [reviews, setReviews] = useState([]);
   const [term, setTerm] = useState("");
-
-  const [filter, setFilter] = useState(filterState.all);
-  
+  const [rateFilter, setRateFilter] = useState(rateFilterState.all);
   const [sorter, setSorter] = useState(sorterState.star);
   const [sorterDir, setSorterDir] = useState(sorterDirState.low);
 
   useEffect(() => {
-    console.log("term: ", term)
-    console.log("filter: ", filter)
-    console.log("sorter: ", sorter)
-    console.log("sorterDir: ", sorterDir)
+    async function fetchReviews() {
+        const requestData = getRequestData(term, rateFilter, sorter, sorterDir);
+        const path = window.location.pathname;
+        const newReviews = await getReviews(path, requestData);
+        setReviews(newReviews);
+    }
 
-    const newReviews = []
-    // const newReviews = API.getReviews(term, filter, sorter, sorterDir);
-    // axios.get("/web/{현재 주소}", )
-    // TODO 현재 route 콘솔에 찍기
-    setReviews(newReviews);
-  }, [term, filter, sorter, sorterDir]);
+    fetchReviews()
+  }, [term, rateFilter, sorter, sorterDir]);
 
   const onSearchChange = (term) => {
     setTerm(term);
   };
 
-  const onFilterChange = (filter) => {
-    setFilter(filter);
+  const onRateFilterChange = (rate) => {
+    if (rateFilter.includes(rate)) setRateFilter(rateFilter.filter((item) => item !== rate));
+    else setRateFilter([...rateFilter, rate]);
   };
 
   const onSorterChange = (sorter) => {
@@ -52,8 +50,8 @@ export default function ReviewMoa() {
       <AppHeader reviewCount={reviews.length} />
       <div className="top-panel d-flex">
         <SearchPanel onSearchChange={onSearchChange} />
-        <Filter filter={filter} onFilterChange={onFilterChange} />
-        <Sorter {...sorter, sorterDir, onSorterChange, onSorterDirChange}/>
+        <RateFilter rateFilter={rateFilter} onRateFilterChange={onRateFilterChange} />
+        <Sorter sorter={sorter} onSorterChange={onSorterChange} onSorterDirChange={onSorterDirChange} sorterDir={sorterDir} />
       </div>
       <ReviewList reviews={reviews} />
     </div>

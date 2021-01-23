@@ -1,7 +1,6 @@
 import React from "react";
 import "./ReviewMoa.css";
 
-
 export default function ReviewItem({content, point, date}) {
 
   return (

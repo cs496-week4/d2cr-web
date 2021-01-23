@@ -24,3 +24,6 @@ yarn-error.log*
 
 # data
 /src/api/data.json
+
+#secret
+.env

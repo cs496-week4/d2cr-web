@@ -35,9 +35,27 @@
 
 .review-app {
   margin: 2rem auto 0;
-  max-width: 400px;
+  /* max-width: 400px; */
 }
 
 .top-panel {
   margin: 1rem 0;
+}
+
+.app-header {
+  align-items: flex-end;
+}
+
+.app-header h1 {
+  flex-grow: 1;
+}
+
+.app-header h2 {
+  font-size: 1.2rem;
+  color: grey;
+}
+
+.btn button {
+      font-size: 1.2rem;
+    color:aquamarine
 }

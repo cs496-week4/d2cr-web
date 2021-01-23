@@ -1,9 +1,9 @@
-const filterState = {
+const rateFilterState = {
   all: [1, 2, 3, 4, 5],
 }; // 별점별로 필터링할거면 다른 방식으로 하는게 좋을듯 (리스트 등)
 
 
-const filterRawButtons = [
+const rateFilterRawButtons = [
   { rate: 1, label: "매우 별로" },
   { rate: 2, label: "별로" },
   { rate: 3, label: "보통" },
@@ -47,10 +47,10 @@ const getLabel = (sorter, sorterDir) => {
 }
 
 module.exports = {
-    filterState,
+    rateFilterState,
     sorterState,
     sorterDirState, 
-    filterRawButtons,
+    rateFilterRawButtons,
     sorterRawButtons,
     getSorterDirRawButtons,
 }

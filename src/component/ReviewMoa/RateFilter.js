@@ -1,14 +1,14 @@
 import React from "react";
 import "./ReviewMoa.css";
-import { filterRawButtons as rawButtons} from "../../util/states"
+import { rateFilterRawButtons as rawButtons} from "../../util/states"
 
 // 별점별 보기 필터
-export default function Filter({ filter, onFilterChange }) {
+export default function RateFilter({ rateFilter, onRateFilterChange }) {
     const buttons = rawButtons.map(({ rate, label }) => {
-      const isActive = filter.includes(rate);
+      const isActive = rateFilter.includes(rate);
       const clazz = isActive ? "btn-info" : "btn-outline-secondary";
       return (
-        <button type="button" className={`btn ${clazz}`} key={rate} onClick={() => onFilterChange(rate)}>
+        <button type="button" className={`btn ${clazz}`} key={rate} onClick={() => onRateFilterChange(rate)}>
           {label}
         </button>
       );
