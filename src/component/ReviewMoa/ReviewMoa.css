@@ -1,0 +1,43 @@
+.review-list .list-group-item {
+  padding: 0.25rem 0.75rem;
+}
+
+.review-list-item {
+  font-size: 1.25rem;
+}
+
+.review-list-item button {
+  width: 35px;
+  margin: 3px;
+}
+
+.review-list-item-content {
+  margin-left: 1.25rem;
+  line-height: 35px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.review-list-item.done .review-list-item-content {
+  text-decoration: line-through;
+}
+
+.review-list-item.important .review-list-item-content {
+  font-weight: bold;
+  color: steelblue;
+}
+
+.search-input {
+  width: auto;
+  flex-grow: 1;
+  margin-right: 3px;
+}
+
+.review-app {
+  margin: 2rem auto 0;
+  max-width: 400px;
+}
+
+.top-panel {
+  margin: 1rem 0;
+}
