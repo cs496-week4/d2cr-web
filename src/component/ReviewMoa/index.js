@@ -7,19 +7,23 @@ import Sorter from "./Sorter";
 import "./ReviewMoa.css";
 import { getReviews } from "../../api";
 import { getRequestData } from "../../util/format";
-import { reviewReducer as reducer } from "../../util/reviews";
-import { reviewInitialState as initialState } from "../../util/reviews";
-import { reviewActions as actions } from "../../util/reviews";
+import { sorterDirState, sorterState, rateFilterState } from "../../util/states";
 
 // 한번에 로드할 리뷰 수
 const loadNum = Number(process.env.REACT_APP_LOAD_NUM);
 
-export default function ReviewMoa() {
-  const [state, dispatch] = useReducer(reducer, initialState);
-
-  const { reviews, searchKeyword, rateFilter, sorter, sorterDir, offset } = state;
+export default function ReviewMoa({ pageId, searchKeyword, onSearchChange }) {
+  const [reviews, setReviews] = useState([]);
+  const [rateFilter, setRateFilter] = useState(rateFilterState.all);
+  const [sorter, setSorter] = useState(sorterState.date);
+  const [sorterDir, setSorterDir] = useState(sorterDirState.low);
+  const [offset, setOffset] = useState(0);
 
   const [reloading, setReloading] = useState(true);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+  const [reviewCount, setReviewCount] = useState(0)
 
   useEffect(() => {
     // 스크롤 이벤트 핸들러
@@ -43,31 +47,39 @@ export default function ReviewMoa() {
   const getCurrentRequestData = () => getRequestData(searchKeyword, rateFilter, sorter, sorterDir);
 
   useEffect(() => {
-			if (offset !== 0) {
-			console.log("스크롤의 끝에 도달해서 새로운 데이터를 불러옵니다!");
+    if (offset !== 0) {
+      console.log("스크롤의 끝에 도달해서 새로운 데이터를 불러옵니다!");
 
-			async function fetchReviews() {
-				const requestData = getCurrentRequestData();
-				const path = window.location.pathname;
-				const newReviews = await getReviews(path, requestData, offset);
-				dispatch(actions.LOAD_MORE_REVIEWS(newReviews));
-			}
-			fetchReviews();
-		}
+      async function fetchReviews() {
+        const requestData = getCurrentRequestData();
+        const newReviews = await getReviews(pageId, requestData, offset);
+        loadMoreReviews(newReviews);
+      }
+      fetchReviews();
+    }
   }, [offset]);
 
   useEffect(() => {
     if (reloading === true) {
-			console.log("쿼리가 바뀌어서 새로운 데이터를 불러옵니다!");
+      console.log("쿼리가 바뀌어서 새로운 데이터를 불러옵니다!");
 
-      async function fetchReviews() {
-        const requestData = getCurrentRequestData();
-        const path = window.location.pathname;
-        const newReviews = await getReviews(path, requestData, 0);
-        dispatch(actions.INIT_REVIEWS(newReviews));
-        setReloading(false);
-        setOffset(0);
-      }
+      // TODO 로딩 중 처리
+
+      const fetchReviews = async () => {
+        try {
+          setError(null);
+          setLoading(true);
+          const requestData = getCurrentRequestData();
+          const path = window.location.pathname;
+          const newReviews = await getReviews(path, requestData, 0);
+          initReviews(newReviews);
+          setReloading(false);
+          setOffset(0);
+        } catch (e) {
+          setError(e);
+        }
+        setLoading(false);
+      };
       fetchReviews();
     }
   }, [reloading]);
@@ -78,12 +90,16 @@ export default function ReviewMoa() {
     console.log("쿼리가 바뀜");
   }, [searchKeyword, rateFilter, sorter, sorterDir]);
 
-  const onSearchChange = (_searchKeyword) => {
-    dispatch(actions.SET_SEARCH(_searchKeyword));
+  const loadMoreReviews = (newReviews) => {
+    setReviews((reviews) => [...reviews, ...newReviews]);
+  };
+
+  const initReviews = (newReviews) => {
+    setReviews(newReviews);
   };
 
   const onRateFilterChange = (_rate) => {
-    dispatch(actions.SET_RATE_FILTER(getRateFilter(_rate)));
+    setRateFilter(getRateFilter(_rate));
   };
 
   const getRateFilter = (_rate) => {
@@ -92,26 +108,28 @@ export default function ReviewMoa() {
   };
 
   const onSorterChange = (_sorter) => {
-    dispatch(actions.SET_SORTER(_sorter));
+    setSorter(_sorter);
   };
 
   const onSorterDirChange = (_sorterDir) => {
-    dispatch(actions.SET_SORTER_DIR(_sorterDir));
+    setSorterDir(_sorterDir);
   };
 
-  const setOffset = (_offset) => {
-    dispatch(actions.SET_OFFSET(_offset));
-  };
+  const getReviewList = () => {
+    if (loading) return <div>로딩중..</div>;
+    if (error) return <div>에러가 발생했습니다</div>;
+    return <ReviewList reviews={reviews} />;
+  }
 
   return (
     <div className="review-app">
-      <AppHeader reviewCount={reviews.length} />
+      <AppHeader reviewCount={reviewCount} />
       <div className="top-panel d-flex">
         <SearchPanel onSearchChange={onSearchChange} />
         <RateFilter rateFilter={rateFilter} onRateFilterChange={onRateFilterChange} />
         <Sorter sorter={sorter} onSorterChange={onSorterChange} onSorterDirChange={onSorterDirChange} sorterDir={sorterDir} />
       </div>
-      <ReviewList reviews={reviews} />
+      {getReviewList()}
     </div>
   );
 }

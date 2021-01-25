@@ -3,15 +3,23 @@ import axios from "axios";
 
 const loadNum = Number(process.env.REACT_APP_LOAD_NUM);
 
-export async function getReviews(path, requestData, offset) {
+export async function getReviews(pageId, requestData, offset) {
   const apiUrl = process.env.REACT_APP_API_URL + "/page";
 
-  const response = await axios.post(`${apiUrl}${path}/${offset}`, requestData);
+  const response = await axios.post(`${apiUrl}/${pageId}/${offset}`, requestData);
   const reviews = response.data;
 
   // const reviews = await mockAPI(requestData, offset); // call mock API for testing
 
   return reviews;
+}
+
+export async function getWordCloudTags(pageId) {
+  const apiUrl = process.env.REACT_APP_API_URL + "/morpheme";
+  console.log("request url: " + `${apiUrl}/${pageId}`);
+  const response = await axios.get(`${apiUrl}/${pageId}`);
+  const tags = response.data;
+  return tags;
 }
 
 export async function helloServer(path, requestData) {
