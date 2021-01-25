@@ -8,11 +8,9 @@ export default function Sorter({ sorter, sorterDir, onSorterChange, onSorterDirC
       const isActive = sorter === name;
       const clazz = isActive ? "btn-info" : "btn-outline-secondary";
       return (
-        <div>
           <button type="button" className={`btn ${clazz}`} key={name} onClick={() => onSorterChange(name)}>
             {label}
           </button>
-        </div>
       );
     });
 
@@ -20,18 +18,16 @@ export default function Sorter({ sorter, sorterDir, onSorterChange, onSorterDirC
       const isActive = sorterDir === name;
       const clazz = isActive ? "btn-info" : "btn-outline-secondary";
       return (
-        <div>
           <button type="button" className={`btn ${clazz}`} key={name} onClick={() => onSorterDirChange(name)}>
             {label}
           </button>
-        </div>
       );
     });
  
     return (
-      <div>
-        <div className="btn-group">{buttons}</div>
-        <div className="btn-group">{dirButtons}</div>
+      <div style={{margin: 10}}>
+        <div className="button-group">{buttons}</div>
+        <div className="button-group">{dirButtons}</div>
       </div>
     );
 }

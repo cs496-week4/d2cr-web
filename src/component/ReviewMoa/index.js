@@ -70,8 +70,7 @@ export default function ReviewMoa({ pageId, searchKeyword, onSearchChange }) {
           setError(null);
           setLoading(true);
           const requestData = getCurrentRequestData();
-          const path = window.location.pathname;
-          const newReviews = await getReviews(path, requestData, 0);
+          const newReviews = await getReviews(pageId, requestData, 0);
           initReviews(newReviews);
           setReloading(false);
           setOffset(0);
@@ -123,12 +122,19 @@ export default function ReviewMoa({ pageId, searchKeyword, onSearchChange }) {
 
   return (
     <div className="review-app">
-      <AppHeader reviewCount={reviewCount} />
-      <div className="top-panel d-flex">
-        <SearchPanel onSearchChange={onSearchChange} />
-        <RateFilter rateFilter={rateFilter} onRateFilterChange={onRateFilterChange} />
-        <Sorter sorter={sorter} onSorterChange={onSorterChange} onSorterDirChange={onSorterDirChange} sorterDir={sorterDir} />
+      {/* <AppHeader reviewCount={reviewCount} /> */}
+
+      <div style={{display: "flex", flexDirection: "column"}}>
+        <div style={{ flex: 1 }}>
+          <RateFilter rateFilter={rateFilter} onRateFilterChange={onRateFilterChange} />
+        </div>
+
+        <div style={{ flex: 1 }}>
+          <Sorter sorter={sorter} onSorterChange={onSorterChange} onSorterDirChange={onSorterDirChange} sorterDir={sorterDir} />
+          <SearchPanel onSearchChange={onSearchChange} />
+        </div>
       </div>
+
       {getReviewList()}
     </div>
   );

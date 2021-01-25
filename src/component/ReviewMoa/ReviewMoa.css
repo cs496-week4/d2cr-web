@@ -36,6 +36,8 @@
 .review-app {
   margin: 2rem auto 0;
   flex: 1;
+  /* display: flex;
+  flex-direction: column; */
   /* max-width: 400px; */
 }
 
@@ -61,3 +63,20 @@
     color:aquamarine
 }
 
+.review-list-container {
+  border-radius: 100;
+  background-color: bisque;
+  border-color: black;
+  /* margin: 10; */
+  padding: 10;
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.button-group {
+  margin-right: 15;
+}

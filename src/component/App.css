@@ -2,5 +2,13 @@
   padding: 0.25rem 0.75rem;
   flex-direction: row;
   display: flex;
+  margin: 20;
+}
 
+.reviews {
+  flex: 1
+}
+
+.analysis {
+  flex: 1;
 }

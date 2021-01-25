@@ -5,7 +5,7 @@ const loadNum = Number(process.env.REACT_APP_LOAD_NUM);
 
 export async function getReviews(pageId, requestData, offset) {
   const apiUrl = process.env.REACT_APP_API_URL + "/page";
-
+  console.log(`${apiUrl}/${pageId}/${offset}`);
   const response = await axios.post(`${apiUrl}/${pageId}/${offset}`, requestData);
   const reviews = response.data;
 
@@ -42,6 +42,8 @@ export async function getWordCloud(path) {
   // TODO 서버에 요청보내서 word cloud 가져오기
 }
 
-export async function getMonthlyRate(path) {
-  // TODO 서버에 요청보내서 월별 리뷰 데이터 가져오기
+export async function getMonthlyRate(pageId) {
+  const apiUrl = process.env.REACT_APP_API_URL + "/monthly";
+  const response = await axios.get(`${apiUrl}/${pageId}`);
+  return response.data
 }

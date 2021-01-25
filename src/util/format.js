@@ -12,4 +12,4 @@ export function removeFirstSlash(str) {
   return (str.substring(1, str.length));
 }
 
-// TODO 평점(1~5)만큼의 별 컴포넌트 반환하는 함수 만들기
+export const rating = [<div></div>, <div>❤</div>, <div>❤❤</div>, <div>❤❤❤</div>, <div>❤❤❤❤</div>, <div>❤❤❤❤❤</div>];

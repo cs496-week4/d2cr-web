@@ -13,7 +13,7 @@ export default function SearchPanel({onSearchChange}) {
 	}
 
   return (
-    <div>
+    <div className="search-panel">
       <input
         type="text"
         className="form-control search-input"

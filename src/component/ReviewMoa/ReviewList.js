@@ -1,16 +1,37 @@
 import ReviewItem from "./ReviewItem";
 import "./ReviewMoa.css";
+import "./ReviewList.css";
 import React from "react";
+import { makeStyles } from "@material-ui/core/styles";
+import Card from "@material-ui/core/Card";
+import CardContent from "@material-ui/core/CardContent";
+import CardHeader from "@material-ui/core/CardHeader";
+import {rating} from "../../util/format"
 
-export default function ReviewList({reviews}) {
+const useStyles = makeStyles((theme) => ({
+  container: {
+    margin: 20,
+  },
+  root: {
+    width: "100%",
+    margin: 5,
+    backgroundColor: theme.palette.background.paper,
+  },
+}));
+
+
+
+export default function ReviewList({ reviews }) {
+  const classes = useStyles();
+
   const elements = reviews.map((item, id) => {
-    return ( // TODO change item key to _id of review schema: key={id} => key={item._id}
-      <li className="list-group-item" key={id}> 
-        <ReviewItem {...item} />
-      </li>
+    return (
+      <Card className={classes.root} key={item._id}>
+        <CardHeader title={item.user} subheader={item.date} action={rating[Number(item.rate)]} />
+        <CardContent> {item.content} </CardContent>
+      </Card>
     );
-  })
+  });
 
-
-  return <ul className="list-group review-list">{elements}</ul>;
+  return <div className={classes.container}>{elements}</div>;
 }

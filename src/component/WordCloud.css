@@ -1,3 +1,15 @@
 .word-cloud {
-    flex: 1;
+  max-width: 500px;
+  padding: 0.25rem 0.75rem;
+  align-content: center;
+  display: flex;
+  flex:1;
+  justify-self: center;
+  text-align: center;
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
