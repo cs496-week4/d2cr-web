@@ -4,31 +4,52 @@ import WordCloud from "./WordCloud";
 import "./App.css";
 import { removeFirstSlash } from "../util/format";
 import MonthlyRate from "./MonthlyRate/MonthlyRate";
+import Container from "@material-ui/core/Container";
+import { makeStyles } from "@material-ui/core/styles";
+import Dashboard from "../dashboard/Dashboard";
+
+// 한번에 로드할 리뷰 수
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    flexDirection: "row",
+    display: "flex",
+    padding: "50",
+  },
+  analysis: {
+    flex: 1,
+  },
+
+  reviews: {
+    flex: 1,
+    width: "100%",
+    minWidth: 600,
+  },
+}));
 
 export default function App() {
-  const pageId = removeFirstSlash(window.location.pathname);
-  // const [pageId, setPageId] = useState("");
-  const [searchKeyword, setSearchKeyword] = useState("");
+  // const classes = useStyles();
 
+  // const pageId = removeFirstSlash(window.location.pathname);
+  // const [searchKeyword, setSearchKeyword] = useState("");
 
-  const onClickTag = (tag) => {
-    setSearchKeyword(tag.value);
-  }
+  // const onClickTag = (tag) => {
+  //   setSearchKeyword(tag.value);
+  // };
 
-  const onSearchChange = (keyword) => {
-    setSearchKeyword(keyword);
-  }
+  // const onSearchChange = (keyword) => {
+  //   setSearchKeyword(keyword);
+  // };
 
-  return (
-    <div className="content">
-      <div className="reviews">
-        <ReviewMoa pageId={pageId} searchKeyword={searchKeyword} onSearchChange={onSearchChange} />
-      </div>
+  // return (
+  //   <Container className={classes.root}>
+  //       <ReviewMoa pageId={pageId} searchKeyword={searchKeyword} onSearchChange={onSearchChange} keyword={searchKeyword} />
 
-      <div className="analysis">
-        <WordCloud pageId={pageId} onClickTag={onClickTag} />
-        <MonthlyRate pageId={pageId} />
-      </div>
-    </div>
-  );
+  //     <Container className={classes.analysis}>
+  //       <WordCloud pageId={pageId} onClickTag={onClickTag} />
+  //       <MonthlyRate pageId={pageId} />
+  //     </Container>
+  //   </Container>
+  // );
+  return <Dashboard/>
 }

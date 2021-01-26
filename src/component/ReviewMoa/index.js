@@ -1,29 +1,61 @@
 import React, { useEffect, useReducer, useState } from "react";
 import AppHeader from "./AppHeader";
 import SearchPanel from "./SearchPanel";
-import ReviewList from "./ReviewList";
+import ReviewItem from "./ReviewItem";
 import RateFilter from "./RateFilter";
 import Sorter from "./Sorter";
 import "./ReviewMoa.css";
-import { getReviews } from "../../api";
+import { getPage } from "../../api";
 import { getRequestData } from "../../util/format";
 import { sorterDirState, sorterState, rateFilterState } from "../../util/states";
+import { AwesomeButton } from "react-awesome-button";
+import styles from "react-awesome-button/src/styles/themes/theme-rickiest";
+import { makeStyles } from "@material-ui/core/styles";
+import Card from "@material-ui/core/Card";
+import Container from "@material-ui/core/Container";
 
 // 한번에 로드할 리뷰 수
 const loadNum = Number(process.env.REACT_APP_LOAD_NUM);
 
-export default function ReviewMoa({ pageId, searchKeyword, onSearchChange }) {
+const useStyles = makeStyles((theme) => ({
+  root: {
+    width: "100%",
+    minWidth: 500,
+  },
+
+  container: {
+    margin: 20,
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    width: "100%",
+    minHeight: 200,
+    flexDirection: "column",
+    margin: 5,
+    backgroundColor: theme.palette.background.paper,
+  },
+}));
+
+export default function ReviewMoa({ pageId, searchKeyword, onSearchChange, keyword, onInit }) {
+  const classes = useStyles();
   const [reviews, setReviews] = useState([]);
   const [rateFilter, setRateFilter] = useState(rateFilterState.all);
-  const [sorter, setSorter] = useState(sorterState.date);
-  const [sorterDir, setSorterDir] = useState(sorterDirState.low);
+  const [sorter, setSorter] = useState(sorterState.none);
+  const [sorterDir, setSorterDir] = useState(sorterDirState.none);
   const [offset, setOffset] = useState(0);
 
   const [reloading, setReloading] = useState(true);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const [reviewCount, setReviewCount] = useState(0)
+  const [reviewCount, setReviewCount] = useState(0);
+
+  const initFilterSorter = () => {
+    setRateFilter(rateFilterState.all);
+    setSorter(sorterState.none);
+    setSorterDir(sorterDirState.none);
+    onSearchChange("");
+  };
 
   useEffect(() => {
     // 스크롤 이벤트 핸들러
@@ -52,7 +84,8 @@ export default function ReviewMoa({ pageId, searchKeyword, onSearchChange }) {
 
       async function fetchReviews() {
         const requestData = getCurrentRequestData();
-        const newReviews = await getReviews(pageId, requestData, offset);
+        const pageData = await getPage(pageId, requestData, offset);
+        const newReviews = pageData.reviews;
         loadMoreReviews(newReviews);
       }
       fetchReviews();
@@ -70,7 +103,9 @@ export default function ReviewMoa({ pageId, searchKeyword, onSearchChange }) {
           setError(null);
           setLoading(true);
           const requestData = getCurrentRequestData();
-          const newReviews = await getReviews(pageId, requestData, 0);
+          const pageData = await getPage(pageId, requestData, 0);
+          const newReviews = pageData.reviews;
+          setReviewCount(pageData.reviewCount);
           initReviews(newReviews);
           setReloading(false);
           setOffset(0);
@@ -99,6 +134,7 @@ export default function ReviewMoa({ pageId, searchKeyword, onSearchChange }) {
 
   const onRateFilterChange = (_rate) => {
     setRateFilter(getRateFilter(_rate));
+    console.log(rateFilter);
   };
 
   const getRateFilter = (_rate) => {
@@ -107,35 +143,41 @@ export default function ReviewMoa({ pageId, searchKeyword, onSearchChange }) {
   };
 
   const onSorterChange = (_sorter) => {
+    console.log("sorter: " + _sorter);
     setSorter(_sorter);
   };
 
   const onSorterDirChange = (_sorterDir) => {
+    console.log("_sorterDir: " + _sorterDir);
+
     setSorterDir(_sorterDir);
   };
 
   const getReviewList = () => {
     if (loading) return <div>로딩중..</div>;
     if (error) return <div>에러가 발생했습니다</div>;
-    return <ReviewList reviews={reviews} />;
-  }
+
+    const elements = reviews.map((item, id) => {
+      return <ReviewItem item={item} key={item._id} />;
+    });
+
+    return <Container className={classes.container}>{elements}</Container>;
+  };
 
   return (
-    <div className="review-app">
-      {/* <AppHeader reviewCount={reviewCount} /> */}
-
-      <div style={{display: "flex", flexDirection: "column"}}>
+    <Container className={classes.root}> 
+      <div>reviewCount: {reviewCount}</div>
+      <div style={{ display: "flex", flexDirection: "column" }}>
         <div style={{ flex: 1 }}>
           <RateFilter rateFilter={rateFilter} onRateFilterChange={onRateFilterChange} />
         </div>
-
         <div style={{ flex: 1 }}>
-          <Sorter sorter={sorter} onSorterChange={onSorterChange} onSorterDirChange={onSorterDirChange} sorterDir={sorterDir} />
-          <SearchPanel onSearchChange={onSearchChange} />
+          <Sorter sorter={sorter} onSorterChange={onSorterChange} onSorterDirChange={onSorterDirChange} sorterDir={sorterDir} onInit={initFilterSorter} />
+          <AwesomeButton onPress={initFilterSorter}> 초기화 </AwesomeButton>
+          <SearchPanel onSearchChange={onSearchChange} keyword={keyword} />
         </div>
       </div>
-
       {getReviewList()}
-    </div>
+    </Container>
   );
 }

@@ -1,16 +1,16 @@
 import React, {useState} from "react";
 import "./ReviewMoa.css";
-export default function SearchPanel({onSearchChange}) {
-  const [searchKeyword, setSearchKeyword] = useState("");
+export default function SearchPanel({ onSearchChange, keyword }) {
+  const [searchKeyword, setSearchKeyword] = useState(keyword);
 
   const handleSearchChange = (e) => {
     const searchKeyword = e.target.value;
     setSearchKeyword(searchKeyword);
-	};
-	
-	const handleSubmit = () => {
-  	onSearchChange(searchKeyword);
-	}
+  };
+
+  const handleSubmit = () => {
+    onSearchChange(searchKeyword);
+  };
 
   return (
     <div className="search-panel">
@@ -27,5 +27,4 @@ export default function SearchPanel({onSearchChange}) {
       </button>
     </div>
   );
-	
 }
