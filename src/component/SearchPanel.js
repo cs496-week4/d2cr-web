@@ -1,5 +1,8 @@
 import React, {useState} from "react";
-import "./ReviewMoa.css";
+import Tooltip from "@material-ui/core/Tooltip";
+import IconButton from "@material-ui/core/IconButton";
+import FilterListIcon from "@material-ui/icons/FilterList";
+
 export default function SearchPanel({ onSearchChange, keyword }) {
   const [searchKeyword, setSearchKeyword] = useState(keyword);
 
@@ -13,15 +16,17 @@ export default function SearchPanel({ onSearchChange, keyword }) {
   };
 
   return (
-    <div className="search-panel">
+    <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
       <input
         type="text"
+        style={{ width: "auto", flexGrow: 1, marginRight: 3 }}
         className="form-control search-input"
         placeholder="검색어를 입력하세요!"
         value={searchKeyword}
         onChange={handleSearchChange}
         onKeyPress={handleSubmit}
       />
+
       <button type="button" className="btn btn-outline-secondary" onClick={handleSubmit}>
         검색
       </button>

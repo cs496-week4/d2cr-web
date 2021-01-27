@@ -4,14 +4,15 @@ import SentimentDissatisfiedIcon from "@material-ui/icons/SentimentDissatisfied"
 import SentimentSatisfiedIcon from "@material-ui/icons/SentimentSatisfied";
 import SentimentSatisfiedAltIcon from "@material-ui/icons/SentimentSatisfiedAltOutlined";
 import SentimentVerySatisfiedIcon from "@material-ui/icons/SentimentVerySatisfied";
+import { sorterDirState } from "./states";
 
 
-export function getRequestData(searchKeyword, rateFilter, sorter, sorterDir) {
+export function getRequestData(searchKeyword, rateFilter, order, orderBy) {
     return {
       search: searchKeyword,
       rateFilter,
-      sorter,
-      sorterDir,
+      sorter: orderBy,
+      sorterDir: (order === "asc") ? sorterDirState.high : sorterDirState.low,
     };
 }
 
