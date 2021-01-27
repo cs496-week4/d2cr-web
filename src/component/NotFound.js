@@ -10,15 +10,6 @@ import Container from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
 import Link from "@material-ui/core/Link";
-import Chart from "./Chart";
-import WordCloud from "./WordCloud";
-import Reviews from "./Reviews";
-import { removeFirstSlash } from "../util/format";
-import IconButton from "@material-ui/core/IconButton"
-import ShopIcon from "@material-ui/icons/Shop";
-import Tooltip from "@material-ui/core/Tooltip";
-import { getProductUrl } from "../api";
-import NotFound from "./NotFound"
 
 function Copyright() {
   return (
@@ -121,84 +112,16 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function App() {
+export default function NotFound() {
   const classes = useStyles();
-  const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
-  const pageId = removeFirstSlash(window.location.pathname);
-  console.log("pageId: ", pageId);
-
-  const [productUrl, setProductUrl] = React.useState(null)
-
-  const onClickProductButton = (e) => {
-     e.preventDefault();
-     if (productUrl)
-      window.location.href = productUrl;
-  }
-
-  useEffect(() => {
-    const fetchUrl = async () => {
-      try {
-        const url = await getProductUrl(pageId)
-        console.log(url)
-        setProductUrl(url);
-      }
-      catch (e) {
-        console.error(e)
-      }
-    }
-
-    fetchUrl()
-  })
 
   return (
-    <div className={classes.root}>
-      <CssBaseline />
-      <AppBar position="absolute" className={clsx(classes.appBar)}>
-        <Toolbar className={classes.toolbar}>
-          <Tooltip title="상품 페이지로 이동" arrow>
-            <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu" onClick={onClickProductButton}>
-              <ShopIcon />
-            </IconButton>
-          </Tooltip>
-
-          <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
-            리뷰
-          </Typography>
-        </Toolbar>
-      </AppBar>
-
-      <main className={classes.content}>
-        <div className={classes.appBarSpacer} />
-        {productUrl ? (
-          <Container maxWidth="lg" className={classes.container}>
-            <Grid container spacing={3}>
-              {/* chart */}
-              <Grid item xs={12} md={8} lg={6}>
-                <Paper className={fixedHeightPaper}>
-                  <Chart pageId={pageId} />
-                </Paper>
-              </Grid>
-              {/* word cloud */}
-              <Grid item xs={12} md={4} lg={6}>
-                <Paper className={fixedHeightPaper}>
-                  <WordCloud pageId={pageId} />
-                </Paper>
-              </Grid>
-              {/* 리뷰 */}
-              <Grid item xs={12}>
-                <Paper className={classes.reviews}>
-                  <Reviews pageId={pageId} />
-                </Paper>
-              </Grid>
-            </Grid>
-            <Box pt={4}>
-              <Copyright />
-            </Box>
-          </Container>
-        ) : (
-          <NotFound />
-        )}
-      </main>
-    </div>
+    <Container maxWidth="lg" className={classes.container}>
+      <Paper className={classes.paper}>
+        <Typography component="h1" color="textSecondary" align="center">
+            페이지가 존재하지 않습니다 😣
+        </Typography>
+      </Paper>
+    </Container>
   );
 }

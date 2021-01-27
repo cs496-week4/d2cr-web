@@ -24,7 +24,7 @@ export async function getWordCloudTags(pageId) {
 export async function helloServer(path, requestData) {
   const apiUrl = process.env.REACT_APP_API_URL + "/hello";
   const response = await axios.get(`${apiUrl}${path}`, requestData);
-  return response.data; // hello 여야 함
+  return response.data.productUrl; // hello 여야 함
 }
 
 // test function
@@ -37,14 +37,17 @@ export async function helloServer(path, requestData) {
 //     }, 3);
 //   });
 
-export async function getWordCloud(path) {
-  // TODO 서버에 요청보내서 word cloud 가져오기
-}
-
 export async function getMonthlyRate(pageId) {
   const apiUrl = process.env.REACT_APP_API_URL + "/monthly";
   const response = await axios.get(`${apiUrl}/${pageId}`);
   return response.data
+}
+
+export async function getProductUrl(pageId) {
+  const apiUrl = process.env.REACT_APP_API_URL + "/product";
+  const response = await axios.get(`${apiUrl}/${pageId}`)
+  console.log(response)
+  return response.data.productUrl
 }
 
 export const monthlyData = [
