@@ -19,7 +19,7 @@ import ShopIcon from "@material-ui/icons/Shop";
 import Tooltip from "@material-ui/core/Tooltip";
 import { getProductUrl } from "../api";
 import NotFound from "./NotFound"
-import Button from "@material-ui/core/Button";
+import Contribute from "./Contribute";
 
 function Copyright() {
   return (
@@ -131,8 +131,8 @@ export default function App() {
   const [productUrl, setProductUrl] = React.useState(null)
 
   const onClickProductButton = (e) => {
-     e.preventDefault();
-     if (productUrl)
+    e.preventDefault();
+    if (productUrl)
       window.location.href = productUrl;
   }
 
@@ -160,9 +160,7 @@ export default function App() {
             <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu" onClick={onClickProductButton}>
               <ShopIcon />
             </IconButton>
-            <Button edge="end" >
-              CONTRIBUTE
-            </Button>
+            {/* <Button variant="contained">Default</Button> */}
           </Tooltip>
 
           <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
@@ -170,39 +168,47 @@ export default function App() {
           </Typography>
         </Toolbar>
       </AppBar>
+      <div className={classes.appBarSpacer} />
 
-      <main className={classes.content}>
-        <div className={classes.appBarSpacer} />
-        {productUrl ? (
-          <Container maxWidth="lg" className={classes.container}>
-            <Grid container spacing={3}>
-              {/* chart */}
-              <Grid item xs={12} md={8} lg={6}>
-                <Paper className={fixedHeightPaper}>
-                  <Chart pageId={pageId} />
-                </Paper>
-              </Grid>
-              {/* word cloud */}
-              <Grid item xs={12} md={4} lg={6}>
-                <Paper className={fixedHeightPaper}>
-                  <WordCloud pageId={pageId} />
-                </Paper>
-              </Grid>
-              {/* 리뷰 */}
-              <Grid item xs={12}>
-                <Paper className={classes.reviews}>
-                  <Reviews pageId={pageId} />
-                </Paper>
-              </Grid>
-            </Grid>
-            <Box pt={4}>
-              <Copyright />
-            </Box>
-          </Container>
-        ) : (
-          <NotFound />
-        )}
-      </main>
+      {/* contribute 페이지 추가 */}
+      <Contribute classes={classes} />
     </div>
   );
+}
+
+
+const ReviewApp = (pageId, productUrl, classes, fixedHeightPaper) => {
+  return (
+    <main className={classes.content}>
+      {productUrl ? (
+        <Container maxWidth="lg" className={classes.container}>
+          <Grid container spacing={3}>
+            {/* chart */}
+            <Grid item xs={12} md={8} lg={6}>
+              <Paper className={fixedHeightPaper}>
+                <Chart pageId={pageId} />
+              </Paper>
+            </Grid>
+            {/* word cloud */}
+            <Grid item xs={12} md={4} lg={6}>
+              <Paper className={fixedHeightPaper}>
+                <WordCloud pageId={pageId} />
+              </Paper>
+            </Grid>
+            {/* 리뷰 */}
+            <Grid item xs={12}>
+              <Paper className={classes.reviews}>
+                <Reviews pageId={pageId} />
+              </Paper>
+            </Grid>
+          </Grid>
+          <Box pt={4}>
+            <Copyright />
+          </Box>
+        </Container>
+      ) : (
+          <NotFound />
+        )}
+    </main>
+  )
 }
