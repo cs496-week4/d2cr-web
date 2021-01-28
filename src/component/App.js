@@ -19,6 +19,7 @@ import ShopIcon from "@material-ui/icons/Shop";
 import Tooltip from "@material-ui/core/Tooltip";
 import { getProductUrl } from "../api";
 import NotFound from "./NotFound"
+import Button from "@material-ui/core/Button";
 
 function Copyright() {
   return (
@@ -159,6 +160,9 @@ export default function App() {
             <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu" onClick={onClickProductButton}>
               <ShopIcon />
             </IconButton>
+            <Button edge="end" >
+              CONTRIBUTE
+            </Button>
           </Tooltip>
 
           <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
