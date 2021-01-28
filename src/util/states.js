@@ -45,10 +45,25 @@ const getSorterDirLabel = (sorter, sorterDir) => {
   }
 };
 
-const buttonStyle = {
-  pressed: "",
-  inpressed: "#bbb"
-}
+const CONTRIBUTE_MSG = {
+  success: "success",
+  failure: "failure",
+  no_email: "no_email",
+  no_mall: "no_mall",
+  no_file: "no_file",
+  default: "default",
+};
+
+
+const CONTRIBUTE_TOOLTIP = {
+  [CONTRIBUTE_MSG.success]: "업로드 성공! 관리자 확인 후 승인됩니다 😊",
+  [CONTRIBUTE_MSG.failure]: "업로드가 실패했습니다. 인터넷 연결을 확인해주세요. 😶",
+  [CONTRIBUTE_MSG.no_email]: "이메일을 입력해주세요!",
+  [CONTRIBUTE_MSG.no_mall]: "타겟 쇼핑몰 주소를 하나 이상 입력해주세요!",
+  [CONTRIBUTE_MSG.no_file]: "스크래핑 API (js 파일)을 함께 첨부해주세요! ",
+  [CONTRIBUTE_MSG.default]: "기여해주셔서 감사합니다 😍",
+};
+
 
 
 module.exports = {
@@ -59,4 +74,6 @@ module.exports = {
   sorterRawButtons,
   getSorterDirLabel,
   sorterLabel,
+  CONTRIBUTE_MSG,
+  CONTRIBUTE_TOOLTIP,
 };

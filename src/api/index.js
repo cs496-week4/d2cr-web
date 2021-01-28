@@ -1,12 +1,18 @@
 import axios from "axios";
+import { printFormData } from "../util/format";
+
 // import data from "./data.json"; // mock data for testing
+
+const multipartHeaders = {
+  "content-type": "multipart/form-data",
+};
 
 export const loadNum = Number(process.env.REACT_APP_LOAD_NUM);
 
 export async function getPage(pageId, requestData, offset) {
   const apiUrl = process.env.REACT_APP_API_URL + "/page";
   console.log(`${apiUrl}/${pageId}/${offset}`);
-  console.log("request Data ", requestData)
+  console.log("request Data ", requestData);
   const response = await axios.post(`${apiUrl}/${pageId}/${offset}`, requestData);
   // const reviews = await mockAPI(requestData, offset); // call mock API for testing
 
@@ -25,6 +31,7 @@ export async function helloServer(path, requestData) {
   const apiUrl = process.env.REACT_APP_API_URL + "/hello";
   const response = await axios.get(`${apiUrl}${path}`, requestData);
   return response.data.productUrl; // hello 여야 함
+
 }
 
 // test function
@@ -40,69 +47,53 @@ export async function helloServer(path, requestData) {
 export async function getMonthlyRate(pageId) {
   const apiUrl = process.env.REACT_APP_API_URL + "/monthly";
   const response = await axios.get(`${apiUrl}/${pageId}`);
-  return response.data
+  return response.data;
 }
 
 export async function getProductUrl(pageId) {
   const apiUrl = process.env.REACT_APP_API_URL + "/product";
-  const response = await axios.get(`${apiUrl}/${pageId}`)
-  console.log(response)
-  return response.data.productUrl
+  const response = await axios.get(`${apiUrl}/${pageId}`);
+  console.log(response);
+  return response.data.productUrl;
 }
 
-export const monthlyData = [
-  {
-    date: "2020. 08",
-    uv: 4000,
-    pv: 2400,
-    amt: 2400,
-  },
-  {
-    date: "2019. 08",
-    uv: 3000,
-    pv: 1398,
-    amt: 2210,
-  },
-  {
-    date: "2020. 10",
-    uv: 2000,
-    pv: 9800,
-    amt: 2290,
-  },
-  {
-    date: "2021. 02",
-    uv: 2780,
-    pv: 3908,
-    amt: 2000,
-  },
-  {
-    date: "2018. 08",
-    uv: 1890,
-    pv: 4800,
-    amt: 2181,
-  },
-  {
-    date: "2019. 09",
-    uv: 2390,
-    pv: 3800,
-    amt: 2500,
-  },
-  {
-    date: "2021. 04",
-    uv: 3490,
-    pv: 4300,
-    amt: 2100,
-  },
-  {
-    date: "2021. 04",
-    uv: 3490,
-    pv: 4300,
-    amt: 2100,
-  },
-  {
-    date: "2021. 04",
-    uv: 3490,
-    pv: 4300,
-    amt: 2100,
-  },
-];
+export async function postContribute(formData) {
+  printFormData(formData);
+  const apiUrl = process.env.REACT_APP_API_URL + "/contribute";
+  // const response = await axios.post(`${apiUrl}`, formData);
+
+  try {
+    const response = await axios.post(`${apiUrl}`, formData, { headers: multipartHeaders });
+    return response.data;
+  } catch (e) {
+    console.error(e);
+    return "failure";
+  }
+}
+
+export async function getContributeList() {
+  const apiUrl = process.env.REACT_APP_API_URL + "/contribute";
+  const response = await axios.get(`${apiUrl}`);
+  console.log(response);
+  return response.data;
+}
+
+export async function acceptCard(token, cardId) {
+  const apiUrl = process.env.REACT_APP_API_URL + "/contribute/accept";
+  const reponse = await axios.post(`${apiUrl}/${cardId}`, {token})
+  return reponse.data;
+}
+
+export async function rejectCard(token, cardId) {
+  const apiUrl = process.env.REACT_APP_API_URL + "/contribute/reject";
+  const reponse = await axios.post(`${apiUrl}/${cardId}`, { token });
+  return reponse.data;
+}
+
+export async function getContributeFile(token, cardId) {
+  const apiUrl = process.env.REACT_APP_API_URL + "/contribute/download";
+  const response = await axios.get(`${apiUrl}/${cardId}`);
+  console.log(response.headers)
+    console.log(response.headers);
+  return response.data;
+}

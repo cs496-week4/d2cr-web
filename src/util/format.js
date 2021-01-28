@@ -6,19 +6,19 @@ import SentimentSatisfiedAltIcon from "@material-ui/icons/SentimentSatisfiedAltO
 import SentimentVerySatisfiedIcon from "@material-ui/icons/SentimentVerySatisfied";
 import { sorterDirState } from "./states";
 
-
 export function getRequestData(searchKeyword, rateFilter, order, orderBy) {
-    return {
-      search: searchKeyword,
-      rateFilter,
-      sorter: orderBy,
-      sorterDir: (order === "asc") ? sorterDirState.high : sorterDirState.low,
-    };
+  return {
+    search: searchKeyword,
+    rateFilter,
+    sorter: orderBy,
+    sorterDir: order === "asc" ? sorterDirState.high : sorterDirState.low,
+  };
 }
 
-export function removeFirstSlash(str) {
-  console.log(str.substring(1, str.length));
-  return (str.substring(1, str.length));
+export function formatPath(str) {
+  // remove /page from path
+  console.log(str.substring(6, str.length));
+  return str.substring(6, str.length);
 }
 
 export const rating = {
@@ -32,4 +32,11 @@ export const rating = {
 export const ratingStyle = {
   active: "#facf6e",
   inactive: "#bbb",
+};
+
+export const printFormData = (formData) => {
+  for (let entry of formData.entries()) {
+    console.log("key: " + entry[0]);
+    console.log("value: " + entry[1]);
+  }
 };

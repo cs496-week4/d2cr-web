@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import clsx from "clsx";
 import { makeStyles } from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -6,34 +6,17 @@ import Box from "@material-ui/core/Box";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
-import Container from "@material-ui/core/Container";
-import Grid from "@material-ui/core/Grid";
-import Paper from "@material-ui/core/Paper";
 import Link from "@material-ui/core/Link";
-import Chart from "./Chart";
-import WordCloud from "./WordCloud";
-import Reviews from "./Reviews";
-import { removeFirstSlash } from "../util/format";
-import IconButton from "@material-ui/core/IconButton"
+import IconButton from "@material-ui/core/IconButton";
 import ShopIcon from "@material-ui/icons/Shop";
 import Tooltip from "@material-ui/core/Tooltip";
-import { getProductUrl } from "../api";
-import NotFound from "./NotFound"
-import Contribute from "./Contribute";
-
-function Copyright() {
-  return (
-    <Typography variant="body2" color="textSecondary" align="center">
-      {"Copyright © "}
-      <Link color="inherit" href="https://github.com/cs496-week4/">
-        조재구, 최상아 <br />
-      </Link>
-      {new Date().getFullYear()}
-    </Typography>
-  );
-}
-
-const drawerWidth = 240;
+import NotFound from "./NotFound";
+import ContributeApp from "./ContributeApp";
+import { Route } from "react-router-dom";
+import ReviewApp from "./ReviewApp";
+import AdminApp from "./AdminApp";
+import Copyright from "./Copyright";
+import Container from "@material-ui/core/Container";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -42,26 +25,11 @@ const useStyles = makeStyles((theme) => ({
   toolbar: {
     paddingRight: 24, // keep right padding when drawer closed
   },
-  toolbarIcon: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "flex-end",
-    padding: "0 8px",
-    ...theme.mixins.toolbar,
-  },
   appBar: {
     zIndex: theme.zIndex.drawer + 1,
     transition: theme.transitions.create(["width", "margin"], {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
-    }),
-  },
-  appBarShift: {
-    marginLeft: drawerWidth,
-    width: `calc(100% - ${drawerWidth}px)`,
-    transition: theme.transitions.create(["width", "margin"], {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.enteringScreen,
     }),
   },
   menuButton: {
@@ -72,26 +40,6 @@ const useStyles = makeStyles((theme) => ({
   },
   title: {
     flexGrow: 1,
-  },
-  drawerPaper: {
-    position: "relative",
-    whiteSpace: "nowrap",
-    width: drawerWidth,
-    transition: theme.transitions.create("width", {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
-  },
-  drawerPaperClose: {
-    overflowX: "hidden",
-    transition: theme.transitions.create("width", {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen,
-    }),
-    width: theme.spacing(7),
-    [theme.breakpoints.up("sm")]: {
-      width: theme.spacing(9),
-    },
   },
   appBarSpacer: theme.mixins.toolbar,
   content: {
@@ -125,31 +73,13 @@ const useStyles = makeStyles((theme) => ({
 export default function App() {
   const classes = useStyles();
   const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
-  const pageId = removeFirstSlash(window.location.pathname);
-  console.log("pageId: ", pageId);
 
-  const [productUrl, setProductUrl] = React.useState(null)
+  const [productUrl, setProductUrl] = useState("/contribute");
 
   const onClickProductButton = (e) => {
     e.preventDefault();
-    if (productUrl)
-      window.location.href = productUrl;
-  }
-
-  useEffect(() => {
-    const fetchUrl = async () => {
-      try {
-        const url = await getProductUrl(pageId)
-        console.log(url)
-        setProductUrl(url);
-      }
-      catch (e) {
-        console.error(e)
-      }
-    }
-
-    fetchUrl()
-  })
+    if (productUrl) window.location.href = productUrl;
+  };
 
   return (
     <div className={classes.root}>
@@ -160,55 +90,27 @@ export default function App() {
             <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu" onClick={onClickProductButton}>
               <ShopIcon />
             </IconButton>
-            {/* <Button variant="contained">Default</Button> */}
           </Tooltip>
+          {/* <Button variant="contained">Default</Button> */}
 
           <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
             리뷰
           </Typography>
         </Toolbar>
       </AppBar>
-      <div className={classes.appBarSpacer} />
+      <main className={classes.content}>
+        <div className={classes.appBarSpacer} />
 
-      {/* contribute 페이지 추가 */}
-      <Contribute classes={classes} />
+        <Container maxWidth="lg" className={classes.container}>
+          <Route exact={true} path="/contribute" render={(props) => <ContributeApp classes={classes} />} />
+          <Route
+            path="/page"
+            render={(props) => <ReviewApp {...props} setProductUrl={setProductUrl} productUrl={productUrl} classes={classes} />}
+          />
+          <Route path="/admin" render={(props) => <AdminApp {...props} classes={classes} />} />
+          <Copyright />
+        </Container>
+      </main>
     </div>
   );
-}
-
-
-const ReviewApp = (pageId, productUrl, classes, fixedHeightPaper) => {
-  return (
-    <main className={classes.content}>
-      {productUrl ? (
-        <Container maxWidth="lg" className={classes.container}>
-          <Grid container spacing={3}>
-            {/* chart */}
-            <Grid item xs={12} md={8} lg={6}>
-              <Paper className={fixedHeightPaper}>
-                <Chart pageId={pageId} />
-              </Paper>
-            </Grid>
-            {/* word cloud */}
-            <Grid item xs={12} md={4} lg={6}>
-              <Paper className={fixedHeightPaper}>
-                <WordCloud pageId={pageId} />
-              </Paper>
-            </Grid>
-            {/* 리뷰 */}
-            <Grid item xs={12}>
-              <Paper className={classes.reviews}>
-                <Reviews pageId={pageId} />
-              </Paper>
-            </Grid>
-          </Grid>
-          <Box pt={4}>
-            <Copyright />
-          </Box>
-        </Container>
-      ) : (
-          <NotFound />
-        )}
-    </main>
-  )
 }
