@@ -8,7 +8,7 @@ import TableSortLabel from "@material-ui/core/TableSortLabel";
 import { makeStyles } from "@material-ui/core/styles";
 import IconButton from "@material-ui/core/IconButton";
 
-import Title from "../Title";
+import Title from "./Title";
 import SearchPanel from "./SearchPanel";
 import { rateFilterState } from "../util/states";
 import RateFilter from "./RateFilter";
@@ -46,7 +46,7 @@ const useStyles = makeStyles((theme) => ({
 
   tableHead: {
     textAlign: "center",
-    minWidth: 150,
+    minWidth: 100,
     textOverflow: "hidden",
   },
 
@@ -186,7 +186,7 @@ export default function Reviews({ pageId }) {
               <TableCell>{review.date}</TableCell>
               <TableCell>{review.name}</TableCell>
               <TableCell>{review.content}</TableCell>
-              <TableCell align="center">{review.rate}</TableCell>
+              <TableCell>{review.rate}</TableCell>
             </TableRow>
           ))}
         </TableBody>

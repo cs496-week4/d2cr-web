@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import Title from "../Title";
+import Title from "./Title";
 import { Bar, BarChart, ResponsiveContainer, XAxis, YAxis, Legend, Tooltip } from "recharts";
 import { getMonthlyRate } from "../api";
 
@@ -57,10 +57,10 @@ const BarComponent = (data) => (
     <YAxis />
     <Tooltip />
     <Legend />
-    <Bar dataKey="1" stackId="a" fill="#8884d8" />
-    <Bar dataKey="2" stackId="a" fill="#82ca9d" />
-    <Bar dataKey="3" stackId="a" fill="#bbb" /> 
-    <Bar dataKey="4" stackId="a" fill="#a" /> 
-    <Bar dataKey="5" stackId="a" fill="#333333" />
+    <Bar dataKey="5" stackId="a" fill="#BBB" />
+    <Bar dataKey="4" stackId="a" fill="#AFCAD7" />
+    <Bar dataKey="3" stackId="a" fill="#3CAEA3" />
+    <Bar dataKey="2" stackId="a" fill="#F6D55C" />
+    <Bar dataKey="1" stackId="a" fill="#ED553B" />
   </BarChart>
 );

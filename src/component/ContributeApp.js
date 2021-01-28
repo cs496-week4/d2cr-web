@@ -6,7 +6,7 @@ import Typography from "@material-ui/core/Typography";
 import TextField from "@material-ui/core/TextField";
 import Paper from "@material-ui/core/Paper";
 import { DropzoneDialog } from "material-ui-dropzone";
-import Title from "../Title";
+import Title from "./Title";
 import { makeStyles } from "@material-ui/core/styles";
 import Link from "@material-ui/core/Link";
 import AttachFileIcon from "@material-ui/icons/AttachFile";

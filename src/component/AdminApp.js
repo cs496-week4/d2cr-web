@@ -80,7 +80,7 @@ export default function AdminApp({ match }) {
   const getComponent = () => {
     if (loading) return <div>로딩중..</div>;
     if (error) return <div>에러가 발생했습니다</div>;
-    if (!filtered || filtered.length == 0) return <div> 해당 조건에 맞는 요청이 없습니다 </div>;
+    if (!filtered || filtered.length === 0) return <div> 해당 조건에 맞는 요청이 없습니다 </div>;
     return filtered.map((card) => (
       <Grid item key={card._id} xs={12} sm={6} md={4}>
         {getCard(card)}

@@ -1,11 +1,15 @@
 import React, { useState, useEffect } from "react";
-import Title from "../Title";
+import Title from "./Title";
 import ReactWordcloud from "react-wordcloud";
 import { getWordCloudTags } from "../api";
+import "./App.css"
 
 const options = {
-  colors: ["black"],
+  colors: ["#FFB997", "#AFCAD7", "#3CAEA3", "#F6D55C", "#ED553B"],
   fontSizes: [18, 36],
+  rotationAngles: [-30, 0, 30],
+  rotations: 2,
+  fontFamily: "GmarketSansTTFLight",
 };
 
 export default function WordCloud({ pageId, onClickTag }) {
